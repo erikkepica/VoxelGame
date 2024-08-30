@@ -9,6 +9,11 @@ workspace "VoxelGame"
 	}
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
+resourceDir = "res"
+
+
+include "VoxelGame/vendor/glfw/"
+include "VoxelGame/vendor/glad/"
 
 project "VoxelGame"
 	location "VoxelGame"
@@ -26,8 +31,21 @@ project "VoxelGame"
 
 	includedirs
 	{
-		"%{prj.name}/vendor/spdlog/include"
+		"%{prj.name}/vendor/spdlog/include",
+		"%{prj.name}/vendor/glfw/include",
+		"%{prj.name}/vendor/glad/include"
 	}
+
+	links
+	{
+		"GLFW",
+		"Glad",
+		"opengl32.lib"
+	}
+
+
+-- Custom build step to copy the resources folder
+
 
 	filter "system:windows"
 		cppdialect "C++17"
@@ -35,6 +53,9 @@ project "VoxelGame"
 		systemversion "latest"
 
 		defines "PLATFORM_WINDOWS"
+		postbuildcommands {
+			"{COPY} " .. resourceDir .. " ../bin/" .. outputdir .. "/%{prj.name}/res"
+		}
 
 
 	filter "configurations:Debug"
@@ -45,6 +66,7 @@ project "VoxelGame"
 	filter "configurations:Release"
 		defines "CFG_RELEASE"
 		optimize "On"
+		postbuildcommands { "commands" }
 
 	
 	filter "configurations:Dist"

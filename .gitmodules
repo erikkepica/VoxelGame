@@ -1,3 +1,6 @@
 [submodule "VoxelGame/vendor/spdlog"]
 	path = VoxelGame/vendor/spdlog
 	url = https://github.com/gabime/spdlog
+[submodule "VoxelGame/vendor/glfw"]
+	path = VoxelGame/vendor/glfw
+	url = https://github.com/TheCherno/glfw
