@@ -1,10 +1,9 @@
 #pragma once
 #include"Core.h"
-#include"glad/glad.h"
+#include<glad/glad.h>
 #include<GLFW/glfw3.h>
 #include<memory>
 #include<string>
-
 
 namespace Kepeca
 {
@@ -32,7 +31,4 @@ namespace Kepeca
 		AppSpecs m_Specs;
 		GLFWwindow* m_Window;
 	};
-
-
-
 }
