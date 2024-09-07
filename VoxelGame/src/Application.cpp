@@ -1,9 +1,14 @@
 #include "Application.h"
 #include"Log.h"
+
 #include"glm/glm.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 
 #include"OpenGLObjects.h"
+#include"RenderObject.h"
+#include"Color.h"
+
+#include"Camera.h"
 
 namespace Kepeca
 {
@@ -15,6 +20,8 @@ namespace Kepeca
     Application::~Application()
     {
     }
+
+    glm::vec2 mousePos(0.0f);
 
     void Application::Run()
     {
@@ -57,44 +64,82 @@ namespace Kepeca
             LOG_TRACE("Initialized glad!");
         }
 
+        glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
         glViewport(0, 0, m_Specs.width, m_Specs.height);
 
+        glfwSetCursorPosCallback(m_Window, mouse_callback);
+        glEnable(GL_DEPTH_TEST);
 
-    
-        Shader shader("res/shaders/default.vert", "res/shaders/default.frag");
         float vertices[] = {
             //      COORDS          UV              NORMAL
-            -0.5f, -0.5f, 0.0f,   0.0f, 0.0f,   0.0f, 0.0f, 1.0f, // left  
-             0.5f, -0.5f, 0.0f,   1.0f, 0.0f,   0.0f, 0.0f, 1.0f, // right 
-            -0.5f,  0.5f, 0.0f,   0.0f, 1.0f,   0.0f, 0.0f, 1.0f, // top left
+            //front
+            -0.5f, -0.5f,  0.5f,   0.0f, 0.0f,   0.0f, 0.0f, 1.0f,  // left  
+             0.5f, -0.5f,  0.5f,   1.0f, 0.0f,   0.0f, 0.0f, 1.0f,  // right 
+             0.5f,  0.5f,  0.5f,   1.0f, 1.0f,   0.0f, 0.0f, 1.0f,  // top right
+            -0.5f,  0.5f,  0.5f,   0.0f, 1.0f,   0.0f, 0.0f, 1.0f,  // top left
 
-             0.5f, -0.5f, 0.0f,   1.0f, 0.0f,   0.0f, 0.0f, 1.0f, // right   
-             0.5f,  0.5f, 0.0f,   1.0f, 1.0f,   0.0f, 0.0f, 1.0f, // top right
-            -0.5f,  0.5f, 0.0f,   0.0f, 1.0f,   0.0f, 0.0f, 1.0f  // top left
+            //left
+            -0.5f, -0.5f, -0.5f,   1.0f, 0.0f,   -1.0f, 0.0f, 0.0f, // back left 
+            -0.5f, -0.5f,  0.5f,   0.0f, 0.0f,   -1.0f, 0.0f, 0.0f, // left  
+            -0.5f,  0.5f,  0.5f,   0.0f, 1.0f,   -1.0f, 0.0f, 0.0f, // top left
+            -0.5f,  0.5f, -0.5f,   1.0f, 1.0f,   -1.0f, 0.0f, 0.0f, // top back left
+
+            //back
+             0.5f, -0.5f, -0.5f,   0.0f, 0.0f,   0.0f, 0.0f, -1.0f,  // back right 
+            -0.5f, -0.5f, -0.5f,   1.0f, 0.0f,   0.0f, 0.0f, -1.0f,  // back left
+            -0.5f,  0.5f, -0.5f,   1.0f, 1.0f,   0.0f, 0.0f, -1.0f,  // top back left 
+             0.5f,  0.5f, -0.5f,   0.0f, 1.0f,   0.0f, 0.0f, -1.0f,  // top back right
+
+            //right
+            0.5f, -0.5f, -0.5f,   1.0f, 0.0f,   1.0f, 0.0f, 0.0f, // back left 
+            0.5f, -0.5f,  0.5f,   0.0f, 0.0f,   1.0f, 0.0f, 0.0f, // left  
+            0.5f,  0.5f,  0.5f,   0.0f, 1.0f,   1.0f, 0.0f, 0.0f, // top left
+            0.5f,  0.5f, -0.5f,   1.0f, 1.0f,   1.0f, 0.0f, 0.0f, // top back left
+
+            //top
+            -0.5f,  0.5f,  0.5f,   0.0f, 0.0f,   0.0f, 1.0f, 0.0f,  // top left  
+             0.5f,  0.5f,  0.5f,   1.0f, 0.0f,   0.0f, 1.0f, 0.0f,  // top right 
+             0.5f,  0.5f, -0.5f,   1.0f, 1.0f,   0.0f, 1.0f, 0.0f,  // top back right
+            -0.5f,  0.5f, -0.5f,   0.0f, 1.0f,   0.0f, 1.0f, 0.0f,  // top back left
         
+            //bottom
+            -0.5f, -0.5f,  0.5f,   0.0f, 0.0f,   0.0f, -1.0f, 0.0f,  // top left  
+             0.5f, -0.5f,  0.5f,   1.0f, 0.0f,   0.0f, -1.0f, 0.0f,  // top right 
+             0.5f, -0.5f, -0.5f,   1.0f, 1.0f,   0.0f, -1.0f, 0.0f,  // top back right
+            -0.5f, -0.5f, -0.5f,   0.0f, 1.0f,   0.0f, -1.0f, 0.0f,  // top back left
         };
-        VertexBufferObject VBO(vertices, sizeof(vertices));
-        VertexArrayObect VAO;
 
-        VBO.UnBind();
-        VAO.UnBind();
-    
+        int indices[] = {
+            0,1,3,
+            1,2,3,
+            4,5,7,
+            5,6,7,
+            8,9,11,
+            9,10,11,
+            12,13,15,
+            13,14,15,
+            16,17,19,
+            17,18,19,
+            20,21,23,
+            21,22,23
+        };
 
         bool wireframe = false;
         bool wireframePressedLastFrame = false;
 
-        glm::mat4 model(1.0f);
-
-        glm::mat4 view(1.0f);
-        view = glm::translate(view, glm::vec3(0, 0, -3.0f));
-
-        glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)m_Specs.width/ (float)m_Specs.height, 0.1f, 100.f);
-
+        Camera cam(45.0f, (float)m_Specs.width / (float)m_Specs.height, 0.1f, 100.0f, this);
         
+        RenderObject renderObject(vertices, sizeof(vertices), indices, sizeof(indices), "res/shaders/default.vert", "res/shaders/default.frag", "res/textures/blocks/grass.png", &cam);
+
+        Color skyColor(143, 211, 255, 255, false);
+        skyColor.NormalizeColor();
+        cam.position = glm::vec3(0, 0, -1);
+
 	    while (!glfwWindowShouldClose(m_Window))
 	    {
-            glClearColor(m_Specs.r, m_Specs.g, m_Specs.b, 1.0f);
-            glClear(GL_COLOR_BUFFER_BIT);
+            glClearColor(skyColor.r, skyColor.g, skyColor.b, skyColor.a);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
             if (glfwGetKey(m_Window, GLFW_KEY_0))
@@ -111,7 +156,7 @@ namespace Kepeca
                 wireframePressedLastFrame = false;
             }
 
-            if (wireframe)
+            if (!wireframe)
             {
                 glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
             }
@@ -120,22 +165,28 @@ namespace Kepeca
                 glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
             }
 
-            model = glm::mat4(1.0f);
-            model = glm::translate(model, glm::vec3(sin(glfwGetTime()), 0.0f, 0.0f));
+            cam.Update(mousePos);
 
-            shader.Bind();
-        
-            shader.SetMat4("model", model);
-            shader.SetMat4("view", view);
-            shader.SetMat4("projection", projection);
-        
-            VAO.Bind();
-            glDrawArrays(GL_TRIANGLES, 0, 6);
+            renderObject.GetShader()->SetVec3("lightPos", glm::vec3(sin(glfwGetTime()), 1, cos(glfwGetTime())));
+            
+            Color lightColor(glm::vec4(143, 211, 255, 255), false);
+            lightColor.NormalizeColor();
+            renderObject.GetShader()->SetVec3("lightColor", lightColor.GetColorVector());
 
+            renderObject.Draw();
 
             glfwSwapBuffers(m_Window);
             glfwPollEvents();
 	    }
+    }
+    GLFWwindow* Application::GetWindow()
+    {
+        return m_Window;
+    }
+    void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+    {
+        mousePos.x = xpos;
+        mousePos.y = ypos;
     }
 }
 

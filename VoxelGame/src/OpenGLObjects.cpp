@@ -1,6 +1,12 @@
 #include "OpenGLObjects.h"
+
 #include<glad/glad.h>
+
 #include <glm/gtc/type_ptr.hpp>
+
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
 #include<fstream>
 #include <sstream>
 #include"Log.h"
@@ -132,6 +138,10 @@ namespace Kepeca
     {
         glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
     }
+    void Shader::SetVec3(const std::string& name, glm::vec3 value) const
+    {
+        glUniform3f(glGetUniformLocation(ID, name.c_str()), value.x, value.y,value.z);
+    }
 
     void Shader::Delete()
     {
@@ -194,5 +204,59 @@ namespace Kepeca
     void VertexArrayObect::UnBind()
     {
         glBindVertexArray(0);
+    }
+
+    //---------------------------------
+    //          EBO
+    //---------------------------------
+
+    ElementBufferObject::ElementBufferObject(int* indices, int size)
+        :indices(indices), size(size)
+    {
+        glGenBuffers(1, &ID);
+        Bind();
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, indices, GL_STATIC_DRAW);
+    }
+    void ElementBufferObject::Bind()
+    {
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ID);
+    }
+    void ElementBufferObject::UnBind()
+    {
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    }
+
+    //---------------------------------
+    //          TEXTURE
+    //---------------------------------
+    
+    Texture::Texture(const char* path)
+    {
+        unsigned char* data = stbi_load(path, &m_Width, &m_Height, &m_NrChannels, 0);
+
+        glGenTextures(1, &ID);
+
+        glBindTexture(GL_TEXTURE_2D, ID);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+
+        stbi_image_free(data);
+    }
+    void Texture::Bind()
+    {
+        glBindTexture(GL_TEXTURE_2D, ID);
+    }
+    void Texture::UnBind()
+    {
+        glBindTexture(GL_TEXTURE_2D, 0);
+    }
+    void Texture::Delete()
+    {
     }
 }

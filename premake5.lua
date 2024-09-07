@@ -33,7 +33,9 @@ project "VoxelGame"
 	{
 		"%{prj.name}/vendor/spdlog/include",
 		"%{prj.name}/vendor/glfw/include",
-		"%{prj.name}/vendor/glad/include"
+		"%{prj.name}/vendor/glad/include",
+		"%{prj.name}/vendor/glm",
+		"%{prj.name}/vendor/stb_image"
 	}
 
 	links
@@ -44,7 +46,6 @@ project "VoxelGame"
 	}
 
 
--- Custom build step to copy the resources folder
 
 
 	filter "system:windows"

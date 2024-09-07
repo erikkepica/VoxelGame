@@ -40,6 +40,19 @@ namespace Kepeca
         virtual void UnBind() override;
 	};
 
+    class ElementBufferObject : OpenGlObject
+    {
+    public:
+        int* indices;
+        int size;
+
+        //Size in bytes
+        ElementBufferObject(int* indices, int size);
+
+        virtual void Bind() override;
+        virtual void UnBind() override;
+    };
+
     class Shader : OpenGlObject
     {
     public:
@@ -52,7 +65,24 @@ namespace Kepeca
         void SetInt(const std::string& name, int value) const;
         void SetFloat(const std::string& name, float value) const;
         void SetMat4(const std::string& name, glm::mat4 value) const;
+        void SetVec3(const std::string& name, glm::vec3 value) const;
 
         void Delete() override;
+    };
+
+    class Texture : OpenGlObject
+    {
+    public:
+        Texture(const char* path);
+
+        virtual void Bind() override;
+        virtual void UnBind() override;
+
+        virtual void Delete() override;
+
+    private:
+        int m_Width = 0;
+        int m_Height = 0;
+        int m_NrChannels = 0;
     };
 }

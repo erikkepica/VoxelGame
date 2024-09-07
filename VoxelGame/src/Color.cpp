@@ -5,7 +5,7 @@ namespace Kepeca
 	Color::Color()
 	{
 	}
-	Color::Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a, bool normalized)
+	Color::Color(float r, float g, float b, float a, bool normalized)
 		: r(r),g(g),b(b),a(a),normalized(normalized)
 	{
 	}
@@ -16,19 +16,26 @@ namespace Kepeca
 
 
 
-	glm::vec4 Color::GetColorVector(Color col)
+	glm::vec4 Color::GetColorVector()
 	{
-		return glm::vec4(col.r, col.g, col.b, col.a);
-	}
-	Color Color::NormalizeColor(Color col)
-	{
-		return Color(col.r/255, col.g/255, col.b/255, col.a/255, true);
+		return glm::vec4(r, g, b, a);
 	}
 
 
-
-	Color Color::UnNormalizeColor(Color col)
+	void Color::NormalizeColor()
 	{
-		return Color(col.r * 255, col.g * 255, col.b * 255, col.a * 255, false);
+		r /= 255;
+		g /= 255;
+		b /= 255;
+		a /= 255;
+		normalized = true;
+	}
+	void Color::UnNormalizeColor()
+	{
+		r *= 255;
+		g *= 255;
+		b *= 255;
+		a *= 255;
+		normalized = false;
 	}
 }

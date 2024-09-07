@@ -7,16 +7,14 @@
 
 namespace Kepeca
 {
+	void mouse_callback(GLFWwindow* window, double xpos, double ypos);
+
 	struct AppSpecs
 	{
 		int width;
 		int height;
 
 		std::string title;
-
-		float r;
-		float g;
-		float b;
 	};
 
 
@@ -27,6 +25,8 @@ namespace Kepeca
 		~Application();
 
 		void Run();
+		
+		GLFWwindow* GetWindow();
 	private:
 		AppSpecs m_Specs;
 		GLFWwindow* m_Window;

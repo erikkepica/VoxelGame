@@ -2,7 +2,7 @@
 
 int main()
 {
-	Kepeca::Application* app = new Kepeca::Application(Kepeca::AppSpecs{1024,720,"Voxel Game", .8f, .2f, .3f});
+	Kepeca::Application* app = new Kepeca::Application(Kepeca::AppSpecs{1024,720,"Voxel Game"});
 	app->Run();
 	delete app;
 }
