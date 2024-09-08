@@ -12,7 +12,9 @@ namespace Kepeca
 		glm::vec3 rotation;
 		glm::vec3 scale;
 
-		RenderObject(float* vertices, int vertSize, int* indices, int indSize, const char* vertShaderPath, const char* fragShaderPath, const char* texPath, Camera* cam);
+		RenderObject();
+
+		void Init(float* vertices, int vertSize, int* indices, int indSize, const char* vertShaderPath, const char* fragShaderPath, const char* texPath, Camera* cam);
 
 		void Draw();
 

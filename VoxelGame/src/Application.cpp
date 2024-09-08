@@ -10,6 +10,8 @@
 
 #include"Camera.h"
 
+#include"stb_image.h"
+
 namespace Kepeca
 {
     Application::Application(AppSpecs specs)
@@ -70,7 +72,7 @@ namespace Kepeca
 
         glfwSetCursorPosCallback(m_Window, mouse_callback);
         glEnable(GL_DEPTH_TEST);
-
+        stbi_set_flip_vertically_on_load(true);
         float vertices[] = {
             //      COORDS          UV              NORMAL
             //front
@@ -130,7 +132,8 @@ namespace Kepeca
 
         Camera cam(45.0f, (float)m_Specs.width / (float)m_Specs.height, 0.1f, 100.0f, this);
         
-        RenderObject renderObject(vertices, sizeof(vertices), indices, sizeof(indices), "res/shaders/default.vert", "res/shaders/default.frag", "res/textures/blocks/grass.png", &cam);
+        RenderObject renderObject;
+        renderObject.Init(vertices, sizeof(vertices), indices, sizeof(indices), "res/shaders/default.vert", "res/shaders/default.frag", "res/textures/blocks/grass.png", &cam);
 
         Color skyColor(143, 211, 255, 255, false);
         skyColor.NormalizeColor();

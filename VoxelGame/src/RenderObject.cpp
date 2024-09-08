@@ -4,7 +4,11 @@
 
 namespace Kepeca
 {
-	RenderObject::RenderObject(float* vertices, int vertSize, int* indices, int indSize, const char* vertShaderPath, const char* fragShaderPath, const char* texPath, Camera* cam)
+	RenderObject::RenderObject()
+	{
+	}
+
+	void RenderObject::Init(float* vertices, int vertSize, int* indices, int indSize, const char* vertShaderPath, const char* fragShaderPath, const char* texPath, Camera* cam)
 	{
 		m_VBO = std::make_unique<VertexBufferObject>(vertices, vertSize);
 		m_VAO = std::make_unique<VertexArrayObect>();
