@@ -5,7 +5,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include"OpenGLObjects.h"
-#include"RenderObject.h"
+#include"Chunk.h"
 #include"Color.h"
 
 #include"Camera.h"
@@ -132,8 +132,9 @@ namespace Kepeca
 
         Camera cam(45.0f, (float)m_Specs.width / (float)m_Specs.height, 0.1f, 100.0f, this);
         
-        RenderObject renderObject;
-        renderObject.Init(vertices, sizeof(vertices), indices, sizeof(indices), "res/shaders/default.vert", "res/shaders/default.frag", "res/textures/blocks/grass.png", &cam);
+        Chunk chunk(glm::ivec3(16));
+
+        chunk.InitCamera(&cam);
 
         Color skyColor(143, 211, 255, 255, false);
         skyColor.NormalizeColor();
@@ -170,13 +171,13 @@ namespace Kepeca
 
             cam.Update(mousePos);
 
-            renderObject.GetShader()->SetVec3("lightPos", glm::vec3(sin(glfwGetTime()), 1, cos(glfwGetTime())));
+            chunk.GetShader()->SetVec3("lightPos", glm::vec3(sin(glfwGetTime()), 1, cos(glfwGetTime())));
             
             Color lightColor(glm::vec4(143, 211, 255, 255), false);
             lightColor.NormalizeColor();
-            renderObject.GetShader()->SetVec3("lightColor", lightColor.GetColorVector());
+            chunk.GetShader()->SetVec3("lightColor", lightColor.GetColorVector());
 
-            renderObject.Draw();
+            chunk.Draw();
 
             glfwSwapBuffers(m_Window);
             glfwPollEvents();

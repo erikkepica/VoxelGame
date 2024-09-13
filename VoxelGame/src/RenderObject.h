@@ -8,15 +8,14 @@ namespace Kepeca
 	class RenderObject
 	{
 	public:
-		glm::vec3 position;
-		glm::vec3 rotation;
-		glm::vec3 scale;
 
 		RenderObject();
 
-		void Init(float* vertices, int vertSize, int* indices, int indSize, const char* vertShaderPath, const char* fragShaderPath, const char* texPath, Camera* cam);
+		void Init(float* vertices, int vertSize, int* indices, int indSize, const char* vertShaderPath, const char* fragShaderPath, const char* texPath);
+		void InitCamera(Camera* cam);
 
 		void Draw();
+
 
 		VertexBufferObject* GetVBO();
 		VertexArrayObect* GetVAO();
@@ -26,6 +25,11 @@ namespace Kepeca
 		Texture* GetTexture();
 
 		glm::mat4 GetModelMat();
+
+		glm::vec3 position;
+		glm::vec3 rotation;
+		glm::vec3 scale;
+
 	private:
 		std::unique_ptr<VertexBufferObject> m_VBO = nullptr;
 		std::unique_ptr<VertexArrayObect> m_VAO = nullptr;

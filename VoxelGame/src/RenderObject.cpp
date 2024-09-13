@@ -1,14 +1,16 @@
 #include "RenderObject.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include"glad/glad.h"
+#include"Log.h"
 
 namespace Kepeca
 {
 	RenderObject::RenderObject()
 	{
+
 	}
 
-	void RenderObject::Init(float* vertices, int vertSize, int* indices, int indSize, const char* vertShaderPath, const char* fragShaderPath, const char* texPath, Camera* cam)
+	void RenderObject::Init(float* vertices, int vertSize, int* indices, int indSize, const char* vertShaderPath, const char* fragShaderPath, const char* texPath)
 	{
 		m_VBO = std::make_unique<VertexBufferObject>(vertices, vertSize);
 		m_VAO = std::make_unique<VertexArrayObect>();
@@ -20,7 +22,10 @@ namespace Kepeca
 		position = glm::vec3(0.0f);
 		rotation = glm::vec3(0.0f);
 		scale = glm::vec3(1.0f);
+	}
 
+	void RenderObject::InitCamera(Camera* cam)
+	{
 		m_Cam = cam;
 	}
 
