@@ -24,5 +24,4 @@ void main()
             
     vec3 result = clamp(ambient + diffuse,0,1) * texture(ourTexture, uv).rgb;
     FragColor = vec4(result, 1.0);
-    FragColor = vec4(uv,1.0f, 1.0);
 }

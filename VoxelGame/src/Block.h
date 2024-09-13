@@ -25,6 +25,8 @@ namespace Kepeca
 		Block GetBlock(uint16_t ID);
 		Block GetBlock(std::string ID);
 
+		void AddBlock(std::string ID, std::string name);
+
 	private:
 		std::vector<Block> m_Blocks;
 	};

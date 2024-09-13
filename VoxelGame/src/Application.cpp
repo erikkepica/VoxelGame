@@ -133,7 +133,7 @@ namespace Kepeca
 
         Camera cam(45.0f, (float)m_Specs.width / (float)m_Specs.height, 0.1f, 100.0f, this);
         
-        Chunk chunk(glm::ivec3(16));
+        Chunk chunk(glm::ivec3(50));
 
         chunk.InitCamera(&cam);
 
@@ -174,7 +174,7 @@ namespace Kepeca
 
             chunk.GetShader()->SetVec3("lightPos", glm::vec3(sin(glfwGetTime()), 1, cos(glfwGetTime())));
             
-            Color lightColor(glm::vec4(143, 211, 255, 255), false);
+            Color lightColor(glm::vec4(245, 245, 255, 255), false);
             lightColor.NormalizeColor();
             chunk.GetShader()->SetVec3("lightColor", lightColor.GetColorVector());
 

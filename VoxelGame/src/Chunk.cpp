@@ -1,6 +1,7 @@
 #include "Chunk.h"
 #include<vector>
 #include<unordered_map>
+#include"Log.h"
 
 namespace Kepeca
 {
@@ -199,9 +200,29 @@ namespace Kepeca
 		:m_Size(size)
 	{
 		m_BlockArray = new uint16_t[size.x * size.z * size.y];
-		for (int i = 0; i < size.x * size.z * size.y; i++)
+		for (int x = 0; x < m_Size.x; x++)
 		{
-			m_BlockArray[i] = 0;
+			for (int y = 0; y < m_Size.y; y++)
+			{
+				for (int z = 0; z < m_Size.z; z++)
+				{
+					int i = PosToIndex(glm::ivec3(x, y, z));
+					int nx = x - size.x / 2;
+					int ny = y - size.y / 2;
+					int nz = z - size.z / 2;
+
+					int dist = glm::distance(glm::vec3(nx, ny, nz), glm::vec3(0.0f));
+
+					if (dist>0.5f*m_Size.x)
+					{
+						m_BlockArray[i] = 0;
+					}
+					else
+					{
+						m_BlockArray[i] = 1;
+					}
+				}
+			}
 		}
 		Build();
 	}
@@ -217,6 +238,8 @@ namespace Kepeca
 			{
 				for (int z = 0; z < m_Size.z; z++)
 				{
+					if (m_BlockArray[PosToIndex(glm::ivec3(x, y, z))] == 0)
+						continue;
 					for (int f = 0; f < Face::SIZE; f++)
 					{
 						int indSize = vertices.size()/8;
@@ -242,7 +265,12 @@ namespace Kepeca
 				}
 			}
 		}
-		Init(vertices.data(), vertices.size(), indices.data(), indices.size(), "res/shaders/default.vert", "res/shaders/default.frag", "res/textures/blocks/grass.png");
+		Init(vertices.data(), vertices.size()*sizeof(float), indices.data(), indices.size() * sizeof(int), "res/shaders/default.vert", "res/shaders/default.frag", "res/textures/blocks/STONE.png");
+	}
+
+	int Chunk::PosToIndex(glm::ivec3 pos)
+	{
+		return pos.x * m_Size.x * m_Size.z + pos.y * m_Size.z + pos.z;
 	}
 
 }

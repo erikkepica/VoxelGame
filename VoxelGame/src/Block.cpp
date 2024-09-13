@@ -3,8 +3,8 @@ namespace Kepeca
 {
 	BlockList::BlockList()
 	{
-		m_Blocks.push_back(Block(m_Blocks.size(), "GRASS_BLOCK", "Grass Block"));
-		m_Blocks.push_back(Block(m_Blocks.size(), "STONE", "Stone"));
+		AddBlock("GRASS_BLOCK", "Grass Block");
+		AddBlock("STONE", "Stone");
 	}
 
 
@@ -27,6 +27,10 @@ namespace Kepeca
 				return blck;
 			}
 		}
+	}
+	void BlockList::AddBlock(std::string ID, std::string name)
+	{
+		m_Blocks.push_back(Block(m_Blocks.size() + 1, ID, name));
 	}
 	Block::Block(uint16_t ID, std::string stringID, std::string name)
 		:ID(ID),stringID(stringID),name(name)
