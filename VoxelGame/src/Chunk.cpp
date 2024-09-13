@@ -219,11 +219,17 @@ namespace Kepeca
 				{
 					for (int f = 0; f < Face::SIZE; f++)
 					{
+						int indSize = vertices.size()/8;
+						for (int i = 0; i < 6; i++)
+						{
+							//Could lead to problems 
+							indices.push_back(Face::m_Indices[i]+ indSize);
+						}
 						for (int v = 0; v < 4; v++)
 						{
-							vertices.push_back(Face::m_FaceVerticiesMap.at(static_cast<Face::FaceType>(f)).at(v * 3)*x);
-							vertices.push_back(Face::m_FaceVerticiesMap.at(static_cast<Face::FaceType>(f)).at(v * 3+1)*y);
-							vertices.push_back(Face::m_FaceVerticiesMap.at(static_cast<Face::FaceType>(f)).at(v * 3+2)*z);
+							vertices.push_back(Face::m_FaceVerticiesMap.at(static_cast<Face::FaceType>(f)).at(v * 3)+x);
+							vertices.push_back(Face::m_FaceVerticiesMap.at(static_cast<Face::FaceType>(f)).at(v * 3+1)+y);
+							vertices.push_back(Face::m_FaceVerticiesMap.at(static_cast<Face::FaceType>(f)).at(v * 3+2)+z);
 
 							vertices.push_back(Face::m_FaceUVMap.at(static_cast<Face::FaceType>(f)).at(v * 2));
 							vertices.push_back(Face::m_FaceUVMap.at(static_cast<Face::FaceType>(f)).at(v * 2+1));
@@ -231,11 +237,6 @@ namespace Kepeca
 							vertices.push_back(Face::m_FaceNormalsMap.at(static_cast<Face::FaceType>(f)).at(v * 3));
 							vertices.push_back(Face::m_FaceNormalsMap.at(static_cast<Face::FaceType>(f)).at(v * 3+1));
 							vertices.push_back(Face::m_FaceNormalsMap.at(static_cast<Face::FaceType>(f)).at(v * 3+2));
-						}
-						for (int i = 0; i < 6; i++)
-						{
-							//Could lead to problems 
-							indices.push_back(Face::m_Indices[i]+indices.size());
 						}
 					}
 				}

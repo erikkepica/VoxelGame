@@ -70,6 +70,7 @@ namespace Kepeca
 
         glViewport(0, 0, m_Specs.width, m_Specs.height);
 
+      //  glfwSetCursorPos(m_Window, 0, 0);
         glfwSetCursorPosCallback(m_Window, mouse_callback);
         glEnable(GL_DEPTH_TEST);
         stbi_set_flip_vertically_on_load(true);
@@ -138,7 +139,7 @@ namespace Kepeca
 
         Color skyColor(143, 211, 255, 255, false);
         skyColor.NormalizeColor();
-        cam.position = glm::vec3(0, 0, -1);
+        cam.position = glm::vec3(0, 0, -20);
 
 	    while (!glfwWindowShouldClose(m_Window))
 	    {
