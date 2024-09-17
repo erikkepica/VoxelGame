@@ -1,10 +1,10 @@
 #include "Block.h"
 namespace Kepeca
 {
-	BlockList::BlockList()
+	void BlockList::InitBlocks()
 	{
-		AddBlock("GRASS_BLOCK", "Grass Block");
-		AddBlock("STONE", "Stone");
+		AddBlock("GRASS_BLOCK", "Grass Block", false);
+		AddBlock("STONE", "Stone", false);
 	}
 
 
@@ -17,6 +17,7 @@ namespace Kepeca
 				return blck;
 			}
 		}
+		throw("");
 	}
 	Block BlockList::GetBlock(std::string ID)
 	{
@@ -27,13 +28,15 @@ namespace Kepeca
 				return blck;
 			}
 		}
+		throw("");
 	}
-	void BlockList::AddBlock(std::string ID, std::string name)
+
+	void BlockList::AddBlock(std::string ID, std::string name, bool transparent)
 	{
-		m_Blocks.push_back(Block(m_Blocks.size() + 1, ID, name));
+		m_Blocks.push_back(Block(m_Blocks.size() + 1, ID, name, transparent));
 	}
-	Block::Block(uint16_t ID, std::string stringID, std::string name)
-		:ID(ID),stringID(stringID),name(name)
+	Block::Block(uint16_t ID, std::string stringID, std::string name, bool transparent)
+		:ID(ID),stringID(stringID),name(name),transparent(transparent)
 	{
 	}
 }

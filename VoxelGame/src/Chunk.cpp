@@ -2,199 +2,11 @@
 #include<vector>
 #include<unordered_map>
 #include"Log.h"
+#include"Block.h"
 
 namespace Kepeca
 {
-	class Face
-	{
-	public:
-		enum FaceType
-		{
-			front,
-			back,
-			right,
-			left,
-			top,
-			bottom,
-			SIZE
-		};
-		inline const static std::vector<unsigned int> m_Indices
-		{
-			0,1,3,
-			1,2,3
-		};
-	
-		inline const static std::unordered_map<FaceType, std::vector<float>> m_FaceVerticiesMap
-		{
-			{front,{
-			-0.5f, -0.5f, 0.5f,
-			0.5f, -0.5f, 0.5f,
-			0.5f,  0.5f, 0.5f,
-			-0.5f,  0.5f, 0.5f
-			}},
-			{back,{
-			-0.5f, -0.5f, -0.5f,
-			0.5f, -0.5f, -0.5f,
-			0.5f,  0.5f, -0.5f,
-			-0.5f,  0.5f, -0.5f
-			}},
-			{right,{
-			0.5f, -0.5f, 0.5f,
-			0.5f, -0.5f, -0.5f,
-			0.5f,  0.5f, -0.5f,
-			0.5f,  0.5f, 0.5f
-			}},
-			{left,{
-			-0.5f, -0.5f, 0.5f,
-			-0.5f, -0.5f, -0.5f,
-			-0.5f,  0.5f, -0.5f,
-			-0.5f,  0.5f, 0.5f
-			}},
-			{top,{
-			-0.5f, 0.5f, -0.5f,
-			-0.5f,  0.5f, 0.5f,
-			0.5f,  0.5f, 0.5f,
-			0.5f, 0.5f, -0.5f
-			}},
-			{bottom,{
-			-0.5f, -0.5f, -0.5f,
-			-0.5f,  -0.5f, 0.5f,
-			0.5f,  -0.5f, 0.5f,
-			0.5f, -0.5f, -0.5f
-			}},
-		};
-		inline const static std::unordered_map<FaceType, std::vector<float>> m_FaceUVMap
-		{
-			{front,{
-			0.0f, 0.0f,
-			1.0f, 0.0f,
-			1.0f, 1.0f,
-			0.0f, 1.0f
-			}},
-			{back,{
-			0.0f, 0.0f,
-			1.0f, 0.0f,
-			1.0f, 1.0f,
-			0.0f, 1.0f
-			}},
-			{right,{
-			1.0f, 0.0f,
-			0.0f, 0.0f,
-			0.0f, 1.0f,
-			1.0f, 1.0f
-			}},
-			{left,{
-			1.0f, 0.0f,
-			0.0f, 0.0f,
-			0.0f, 1.0f,
-			1.0f, 1.0f
-			}},
-			{top,{
-			0.0f, 0.0f,
-			1.0f, 0.0f,
-			1.0f, 1.0f,
-			0.0f, 1.0f
-			}},
-			{bottom,{
-			0.0f, 0.0f,
-			1.0f, 0.0f,
-			1.0f, 1.0f,
-			0.0f, 1.0f
-			}},
-		};
-		inline const static std::unordered_map<FaceType, std::vector<float>> m_FaceNormalsMap
-		{
-			{front,{
-			0.0f, 0.0f, 1.0f,
-			0.0f, 0.0f, 1.0f,
-			0.0f, 0.0f, 1.0f,
-			0.0f, 0.0f, 1.0f
-			}},
-			{back,{
-			0.0f, 0.0f, -1.0f,
-			0.0f, 0.0f, -1.0f,
-			0.0f, 0.0f, -1.0f,
-			0.0f, 0.0f, -1.0f
-			}},
-			{right,{
-			1.0f, 0.0f, 0.0f,
-			1.0f, 0.0f, 0.0f,
-			1.0f, 0.0f, 0.0f,
-			1.0f, 0.0f, 0.0f
-			}},
-			{left,{
-			-1.0f, 0.0f, 0.0f,
-			-1.0f, 0.0f, 0.0f,
-			-1.0f, 0.0f, 0.0f,
-			-1.0f, 0.0f, 0.0f
-			}},
-			{top,{
-			0.0f, 1.0f, 0.0f,
-			0.0f, 1.0f, 0.0f,
-			0.0f, 1.0f, 0.0f,
-			0.0f, 1.0f, 0.0f
-			}},
-			{bottom,{
-			0.0f, -1.0f, 0.0f,
-			0.0f, -1.0f, 0.0f,
-			0.0f, -1.0f, 0.0f,
-			0.0f, -1.0f, 0.0f
-			}},
-		};
-	};
-	float g_CubeVertices[] = {
-		//      COORDS          UV              NORMAL
-		//front
-		-0.5f, -0.5f,  0.5f,   0.0f, 0.0f,   0.0f, 0.0f, 1.0f,  // left  
-		 0.5f, -0.5f,  0.5f,   1.0f, 0.0f,   0.0f, 0.0f, 1.0f,  // right 
-		 0.5f,  0.5f,  0.5f,   1.0f, 1.0f,   0.0f, 0.0f, 1.0f,  // top right
-		-0.5f,  0.5f,  0.5f,   0.0f, 1.0f,   0.0f, 0.0f, 1.0f,  // top left
 
-		//left
-		-0.5f, -0.5f, -0.5f,   1.0f, 0.0f,   -1.0f, 0.0f, 0.0f, // back left 
-		-0.5f, -0.5f,  0.5f,   0.0f, 0.0f,   -1.0f, 0.0f, 0.0f, // left  
-		-0.5f,  0.5f,  0.5f,   0.0f, 1.0f,   -1.0f, 0.0f, 0.0f, // top left
-		-0.5f,  0.5f, -0.5f,   1.0f, 1.0f,   -1.0f, 0.0f, 0.0f, // top back left
-
-		//back
-		 0.5f, -0.5f, -0.5f,   0.0f, 0.0f,   0.0f, 0.0f, -1.0f,  // back right 
-		-0.5f, -0.5f, -0.5f,   1.0f, 0.0f,   0.0f, 0.0f, -1.0f,  // back left
-		-0.5f,  0.5f, -0.5f,   1.0f, 1.0f,   0.0f, 0.0f, -1.0f,  // top back left 
-		 0.5f,  0.5f, -0.5f,   0.0f, 1.0f,   0.0f, 0.0f, -1.0f,  // top back right
-
-		 //right
-		 0.5f, -0.5f, -0.5f,   1.0f, 0.0f,   1.0f, 0.0f, 0.0f, // back left 
-		 0.5f, -0.5f,  0.5f,   0.0f, 0.0f,   1.0f, 0.0f, 0.0f, // left  
-		 0.5f,  0.5f,  0.5f,   0.0f, 1.0f,   1.0f, 0.0f, 0.0f, // top left
-		 0.5f,  0.5f, -0.5f,   1.0f, 1.0f,   1.0f, 0.0f, 0.0f, // top back left
-
-		 //top
-		 -0.5f,  0.5f,  0.5f,   0.0f, 0.0f,   0.0f, 1.0f, 0.0f,  // top left  
-		  0.5f,  0.5f,  0.5f,   1.0f, 0.0f,   0.0f, 1.0f, 0.0f,  // top right 
-		  0.5f,  0.5f, -0.5f,   1.0f, 1.0f,   0.0f, 1.0f, 0.0f,  // top back right
-		 -0.5f,  0.5f, -0.5f,   0.0f, 1.0f,   0.0f, 1.0f, 0.0f,  // top back left
-
-		 //bottom
-		 -0.5f, -0.5f,  0.5f,   0.0f, 0.0f,   0.0f, -1.0f, 0.0f,  // top left  
-		  0.5f, -0.5f,  0.5f,   1.0f, 0.0f,   0.0f, -1.0f, 0.0f,  // top right 
-		  0.5f, -0.5f, -0.5f,   1.0f, 1.0f,   0.0f, -1.0f, 0.0f,  // top back right
-		 -0.5f, -0.5f, -0.5f,   0.0f, 1.0f,   0.0f, -1.0f, 0.0f,  // top back left
-	};
-
-	int g_CubeIndices[] = {
-		0,1,3,
-		1,2,3,
-		4,5,7,
-		5,6,7,
-		8,9,11,
-		9,10,11,
-		12,13,15,
-		13,14,15,
-		16,17,19,
-		17,18,19,
-		20,21,23,
-		21,22,23
-	};
 
 	Chunk::Chunk(glm::ivec3 size)
 		:m_Size(size)
@@ -207,19 +19,38 @@ namespace Kepeca
 				for (int z = 0; z < m_Size.z; z++)
 				{
 					int i = PosToIndex(glm::ivec3(x, y, z));
+
+
 					int nx = x - size.x / 2;
 					int ny = y - size.y / 2;
 					int nz = z - size.z / 2;
 
 					int dist = glm::distance(glm::vec3(nx, ny, nz), glm::vec3(0.0f));
 
-					if (dist>0.5f*m_Size.x)
+					if (dist > 0.5f * m_Size.x)
 					{
 						m_BlockArray[i] = 0;
 					}
 					else
 					{
-						m_BlockArray[i] = 1;
+						if (glm::distance(glm::vec2(nx, ny), glm::vec2(0, 0)) < 5)
+						{
+							LOG_TRACE("Generating ... Progress: {0}", 100.f * (float)i / (float)(size.x * size.y * size.z));
+
+							m_BlockArray[i] = 0;
+						}
+						else if (glm::distance(glm::vec2(nz, ny), glm::vec2(0, 0)) < 5)
+						{
+							m_BlockArray[i] = 0;
+						}
+						else if (glm::distance(glm::vec2(nx, nz), glm::vec2(0, 0)) < 5)
+						{
+							m_BlockArray[i] = 0;
+						}
+						else
+						{
+							m_BlockArray[i] = 2;
+						}
 					}
 				}
 			}
@@ -242,6 +73,10 @@ namespace Kepeca
 						continue;
 					for (int f = 0; f < Face::SIZE; f++)
 					{
+						if (!FaceVisibility(glm::vec3(x, y, z), static_cast<Face::FaceType>(f)))
+						{
+							continue;
+						}
 						int indSize = vertices.size()/8;
 						for (int i = 0; i < 6; i++)
 						{
@@ -271,6 +106,25 @@ namespace Kepeca
 	int Chunk::PosToIndex(glm::ivec3 pos)
 	{
 		return pos.x * m_Size.x * m_Size.z + pos.y * m_Size.z + pos.z;
+	}
+
+	bool Chunk::FaceVisibility(glm::ivec3 pos, Face::FaceType face)
+	{
+		if ((pos + glm::ivec3(Face::m_FaceNormalsMap.at(face)[0], Face::m_FaceNormalsMap.at(face)[1], Face::m_FaceNormalsMap.at(face)[2])).x < 0 || (pos + glm::ivec3(Face::m_FaceNormalsMap.at(face)[0], Face::m_FaceNormalsMap.at(face)[1], Face::m_FaceNormalsMap.at(face)[2])).x > m_Size.x - 1 ||
+			(pos + glm::ivec3(Face::m_FaceNormalsMap.at(face)[0], Face::m_FaceNormalsMap.at(face)[1], Face::m_FaceNormalsMap.at(face)[2])).y < 0 || (pos + glm::ivec3(Face::m_FaceNormalsMap.at(face)[0], Face::m_FaceNormalsMap.at(face)[1], Face::m_FaceNormalsMap.at(face)[2])).y > m_Size.x - 1 ||
+			(pos + glm::ivec3(Face::m_FaceNormalsMap.at(face)[0], Face::m_FaceNormalsMap.at(face)[1], Face::m_FaceNormalsMap.at(face)[2])).z < 0 || (pos + glm::ivec3(Face::m_FaceNormalsMap.at(face)[0], Face::m_FaceNormalsMap.at(face)[1], Face::m_FaceNormalsMap.at(face)[2])).z > m_Size.x - 1)
+		{
+			return true;
+		}
+		if (BlockList::GetBlock(m_BlockArray[PosToIndex(pos)]).transparent)
+		{
+			return true;
+		}
+		if (m_BlockArray[PosToIndex(pos + glm::ivec3(Face::m_FaceNormalsMap.at(face)[0], Face::m_FaceNormalsMap.at(face)[1], Face::m_FaceNormalsMap.at(face)[2]))] == 0)
+		{
+			return true;
+		}
+		return false;
 	}
 
 }

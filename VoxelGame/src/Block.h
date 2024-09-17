@@ -8,12 +8,14 @@ namespace Kepeca
 	class Block
 	{
 	public:
-		Block(uint16_t ID, std::string stringID, std::string name);
+		Block(uint16_t ID, std::string stringID, std::string name, bool transparent);
 
 		uint16_t ID;
 		std::string stringID;
 		
 		std::string name;
+
+		bool transparent;
 	private:
 
 	};
@@ -21,13 +23,12 @@ namespace Kepeca
 	class BlockList
 	{
 	public:
-		BlockList();
-		Block GetBlock(uint16_t ID);
-		Block GetBlock(std::string ID);
+		static void InitBlocks();
+		static Block GetBlock(uint16_t ID);
+		static Block GetBlock(std::string ID);
 
-		void AddBlock(std::string ID, std::string name);
+		static void AddBlock(std::string ID, std::string name, bool transparen);
 
-	private:
-		std::vector<Block> m_Blocks;
+		static inline std::vector<Block> m_Blocks;
 	};
 }

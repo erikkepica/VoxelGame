@@ -12,6 +12,8 @@
 
 #include"stb_image.h"
 
+#include"Block.h"
+
 namespace Kepeca
 {
     Application::Application(AppSpecs specs)
@@ -74,72 +76,21 @@ namespace Kepeca
         glfwSetCursorPosCallback(m_Window, mouse_callback);
         glEnable(GL_DEPTH_TEST);
         stbi_set_flip_vertically_on_load(true);
-        float vertices[] = {
-            //      COORDS          UV              NORMAL
-            //front
-            -0.5f, -0.5f,  0.5f,   0.0f, 0.0f,   0.0f, 0.0f, 1.0f,  // left  
-             0.5f, -0.5f,  0.5f,   1.0f, 0.0f,   0.0f, 0.0f, 1.0f,  // right 
-             0.5f,  0.5f,  0.5f,   1.0f, 1.0f,   0.0f, 0.0f, 1.0f,  // top right
-            -0.5f,  0.5f,  0.5f,   0.0f, 1.0f,   0.0f, 0.0f, 1.0f,  // top left
 
-            //left
-            -0.5f, -0.5f, -0.5f,   1.0f, 0.0f,   -1.0f, 0.0f, 0.0f, // back left 
-            -0.5f, -0.5f,  0.5f,   0.0f, 0.0f,   -1.0f, 0.0f, 0.0f, // left  
-            -0.5f,  0.5f,  0.5f,   0.0f, 1.0f,   -1.0f, 0.0f, 0.0f, // top left
-            -0.5f,  0.5f, -0.5f,   1.0f, 1.0f,   -1.0f, 0.0f, 0.0f, // top back left
-
-            //back
-             0.5f, -0.5f, -0.5f,   0.0f, 0.0f,   0.0f, 0.0f, -1.0f,  // back right 
-            -0.5f, -0.5f, -0.5f,   1.0f, 0.0f,   0.0f, 0.0f, -1.0f,  // back left
-            -0.5f,  0.5f, -0.5f,   1.0f, 1.0f,   0.0f, 0.0f, -1.0f,  // top back left 
-             0.5f,  0.5f, -0.5f,   0.0f, 1.0f,   0.0f, 0.0f, -1.0f,  // top back right
-
-            //right
-            0.5f, -0.5f, -0.5f,   1.0f, 0.0f,   1.0f, 0.0f, 0.0f, // back left 
-            0.5f, -0.5f,  0.5f,   0.0f, 0.0f,   1.0f, 0.0f, 0.0f, // left  
-            0.5f,  0.5f,  0.5f,   0.0f, 1.0f,   1.0f, 0.0f, 0.0f, // top left
-            0.5f,  0.5f, -0.5f,   1.0f, 1.0f,   1.0f, 0.0f, 0.0f, // top back left
-
-            //top
-            -0.5f,  0.5f,  0.5f,   0.0f, 0.0f,   0.0f, 1.0f, 0.0f,  // top left  
-             0.5f,  0.5f,  0.5f,   1.0f, 0.0f,   0.0f, 1.0f, 0.0f,  // top right 
-             0.5f,  0.5f, -0.5f,   1.0f, 1.0f,   0.0f, 1.0f, 0.0f,  // top back right
-            -0.5f,  0.5f, -0.5f,   0.0f, 1.0f,   0.0f, 1.0f, 0.0f,  // top back left
-        
-            //bottom
-            -0.5f, -0.5f,  0.5f,   0.0f, 0.0f,   0.0f, -1.0f, 0.0f,  // top left  
-             0.5f, -0.5f,  0.5f,   1.0f, 0.0f,   0.0f, -1.0f, 0.0f,  // top right 
-             0.5f, -0.5f, -0.5f,   1.0f, 1.0f,   0.0f, -1.0f, 0.0f,  // top back right
-            -0.5f, -0.5f, -0.5f,   0.0f, 1.0f,   0.0f, -1.0f, 0.0f,  // top back left
-        };
-
-        int indices[] = {
-            0,1,3,
-            1,2,3,
-            4,5,7,
-            5,6,7,
-            8,9,11,
-            9,10,11,
-            12,13,15,
-            13,14,15,
-            16,17,19,
-            17,18,19,
-            20,21,23,
-            21,22,23
-        };
+        BlockList::InitBlocks();
 
         bool wireframe = false;
         bool wireframePressedLastFrame = false;
 
-        Camera cam(45.0f, (float)m_Specs.width / (float)m_Specs.height, 0.1f, 100.0f, this);
+        Camera cam(58, (float)m_Specs.width / (float)m_Specs.height, 0.1f, 100.0f, this);
         
-        Chunk chunk(glm::ivec3(50));
+        Chunk chunk(glm::ivec3(30));
 
         chunk.InitCamera(&cam);
 
         Color skyColor(143, 211, 255, 255, false);
         skyColor.NormalizeColor();
-        cam.position = glm::vec3(0, 0, -20);
+        cam.position = glm::vec3(0, 0, 0);
 
 	    while (!glfwWindowShouldClose(m_Window))
 	    {

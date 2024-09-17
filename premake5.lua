@@ -67,7 +67,6 @@ project "VoxelGame"
 	filter "configurations:Release"
 		defines "CFG_RELEASE"
 		optimize "On"
-		postbuildcommands { "commands" }
 
 	
 	filter "configurations:Dist"
